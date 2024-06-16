@@ -4,6 +4,8 @@ import card3 from './img/card3.jpg';
 import card4 from './img/card4.jpg';
 import card5 from './img/card5.jpg';
 import card6 from './img/card6.jpg';
+import arrowLeft from './img/arrow-left.png';
+import arrowRight from './img/arrow-right.png';
 import cat from './img/cat.png';
 import logo from './img/logo.png';
 
@@ -47,31 +49,76 @@ export function renderHeader(){
   const logoText = newTag('div', 'logo-text', 'Feya Shop');
   append(logoBox, logoImg, logoText);
 
-  const homeTab = newTab('Головна', 'bx-home');
-  const storeTab = newTab('Магазин', 'bx-store-alt');
-  const aboutTab = newTab('Про нас', 'bx-info-circle');
-  const mailTab = newTab('Напишіть нам', 'bx-envelope');
+  const homeTab = newTab('Home', 'bx-home');
+  const storeTab = newTab('Store', 'bx-store-alt');
+  const aboutTab = newTab('About us', 'bx-info-circle');
+  const mailTab = newTab('Contact us', 'bx-envelope');
   append(tabs, homeTab, storeTab, aboutTab, mailTab);
 
   append(header, logoBox, tabs);
   document.body.appendChild(header);
 }
 
-export function renderSectionBigImg(){
+export function renderBigImg(){
   const section = newTag('section', 'sect-img');
 
   const bigImg = newTag('img', 'big-img');
   bigImg.src = cat;
   
   const textBlock = newTag('div', 'text-block');
-  const orderBtn = newTag('button', 'order-now', 'ЗАМОВИТИ');
-  const text = newTag('p', 'text', 'Затишок для вашого дому❤️');
+  const orderBtn = newTag('button', 'order-now', 'ORDER');
+  const text = newTag('p', 'text', 'Cosiness for your home❤️');
   append(textBlock, orderBtn, text);
 
   append(section, bigImg, textBlock);
   document.body.appendChild(section);
 }
 
+export function renderCardSection(){
+  const section = newTag('section', 'sect-cards');
+  const text = newTag('p', 'text', 'To-day');
+
+  const carousel = newTag('div', 'carousel');
+  const scroll = newTag('div', 'scroll');
+  carousel.appendChild(scroll);
+
+  append(section, text, carousel);
+  document.body.appendChild(section);
+}
+
+export function renderCard(imageNum, mainText, secondaryText, prevPrice, currPrice){
+  const img = [card1, card2, card3, card4, card5, card6];
+
+  const carousel = document.querySelector('.carousel');
+  if(carousel){
+    const card = newTag('div', 'card');
+
+    const image = newTag('img', 'image');
+    image.src = img[imageNum];
+
+    const words = newTag('div', 'words');
+    const main = newTag('div', 'main-text', mainText);
+    const secondary = newTag('div', 'secondary-text', secondaryText);
+    append(words, main, secondary);
+    
+    const numbers = newTag('div', 'numbers');
+    const price = newTag('div', 'price');
+    const current = newTag('div', 'current', `${currPrice}₴`);
+    const previous = newTag('s', 'previous', `${prevPrice}₴`);
+    append(price, current, previous);
+
+    const order = newTag('button', 'order', 'ORDER');
+    const icon = newIcon('bx-cart');
+    order.appendChild(icon);
+    append(numbers, price, order);
+    
+    const textContent = newTag('div', 'text-content');
+    append(textContent, words, numbers);
+
+    append(card, image, textContent);
+    carousel.appendChild(card)
+  }
+}
 
 
 

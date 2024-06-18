@@ -74,50 +74,49 @@ export function renderBigImg(){
   document.body.appendChild(section);
 }
 
-export function renderCardSection(){
+export function renderOfferSection(){
   const section = newTag('section', 'sect-cards');
   const text = newTag('p', 'text', 'To-day');
 
-  const carousel = newTag('div', 'carousel');
+  const offers = newTag('div', 'offers');
   const scroll = newTag('div', 'scroll');
-  carousel.appendChild(scroll);
+  offers.appendChild(scroll);
 
-  append(section, text, carousel);
+  append(section, text, offers);
   document.body.appendChild(section);
 }
 
 export function renderCard(imageNum, mainText, secondaryText, prevPrice, currPrice){
   const img = [card1, card2, card3, card4, card5, card6];
 
-  const carousel = document.querySelector('.carousel');
-  if(carousel){
-    const card = newTag('div', 'card');
+  const offers = document.querySelector('.offers');
+  
+  const card = newTag('div', 'card');
 
-    const image = newTag('img', 'image');
-    image.src = img[imageNum];
+  const image = newTag('div', 'image');
+  image.style.backgroundImage = `url(${img[imageNum]})`;
 
-    const words = newTag('div', 'words');
-    const main = newTag('div', 'main-text', mainText);
-    const secondary = newTag('div', 'secondary-text', secondaryText);
-    append(words, main, secondary);
-    
-    const numbers = newTag('div', 'numbers');
-    const price = newTag('div', 'price');
-    const current = newTag('div', 'current', `${currPrice}₴`);
-    const previous = newTag('s', 'previous', `${prevPrice}₴`);
-    append(price, current, previous);
+  const words = newTag('div', 'words');
+  const main = newTag('div', 'main-text', mainText);
+  const secondary = newTag('div', 'secondary-text', secondaryText);
+  append(words, main, secondary);
+  
+  const numbers = newTag('div', 'numbers');
+  const price = newTag('div', 'price');
+  const current = newTag('div', 'current', `${currPrice}₴`);
+  const previous = newTag('s', 'previous', `${prevPrice}₴`);
+  append(price, current, previous);
 
-    const order = newTag('button', 'order', 'ORDER');
-    const icon = newIcon('bx-cart');
-    order.appendChild(icon);
-    append(numbers, price, order);
-    
-    const textContent = newTag('div', 'text-content');
-    append(textContent, words, numbers);
+  const order = newTag('button', 'order', 'ORDER');
+  const icon = newIcon('bx-cart');
+  order.appendChild(icon);
+  append(numbers, price, order);
+  
+  const textContent = newTag('div', 'text-content');
+  append(textContent, words, numbers);
 
-    append(card, image, textContent);
-    carousel.appendChild(card)
-  }
+  append(card, image, textContent);
+  offers.appendChild(card)
 }
 
 

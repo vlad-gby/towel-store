@@ -35,13 +35,22 @@
   --font-comm-regular: 'Commissioner-Regular', system-ui, 'sans-serif';
   --font-great-vibes: 'Great-Vibes', serif, system-ui;
 }
-body{
-  background-color: var(--clr-green-light-bg);
-}
-
 a{
   text-decoration: none;
 }
+
+body{
+  background-color: var(--clr-green-light-bg);
+}
+body section{
+  
+  & .text{
+    font-size: 64px;
+    color: var(--clr-green-dark);
+    margin-left: 36px;
+}
+}
+
 
 
 header{
@@ -141,19 +150,13 @@ header{
 }
 
 .sect-cards{
-  height: 600px;
-  /* margin: 0 16px; */
-  
-  & .text{
-    font-size: 64px;
-    color: var(--clr-green-dark);
-    margin: 36px;
-  }
+  padding: 24px 0;
 
   & .offers{
     display: flex;
     justify-content: space-evenly;
     gap: 16px;
+    margin: 40px 8px;
 
     background: rgb(255,255,255);
     background: linear-gradient(0deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.1) 100%);
@@ -234,3 +237,92 @@ header{
   }
 }
 
+.sect-contact{
+  padding: 24px;
+  background-color: var(--clr-green-light);
+
+  & .flex-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    & .img{
+      height: 500px;
+      margin: 40px;
+    }
+
+    & .contact-block{
+      border: 2px solid var(--clr-blue-dark);
+      border-radius: 2px;
+      display: flex;
+      justify-content: space-between;
+      gap: 40px;
+      padding: 32px;
+
+      & .form{
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+
+        & input{
+          outline: none;
+          border: none;
+          border-bottom: 2px solid var(--clr-blue-dark);
+          background-color: rgba(0, 0, 0, 0);
+          padding: 8px 8px;
+          width: 300px;
+          font-size: 20px;
+        }
+        & .submit{
+          background-color: var(--clr-green-light-bg);
+          color: var(--clr-green-dark-ultra);
+          border: none;
+          font-size: 40px;
+          font-family: var(--font-comm-bold);
+          border-radius: 32px;
+          padding: 8px 16px;
+          cursor: pointer;
+        }
+        & .submit:hover{
+          box-shadow: 0 0 10px 1px white;
+        }
+      }
+      & .copy-info{
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        font-size: 20px;
+        font-family: var(--font-comm-regular);
+
+        & .header{
+          font-size: 24px;
+          font-family: var(--font-comm-bold);
+        }
+        & .copy-button{
+          position: relative;
+          background-color: rgba(0, 0, 0, 0);
+          border: 1px dashed var(--clr-blue-dark);
+          border-radius: 2px;
+          padding-bottom: 0;
+          padding-top: 2px;
+          margin: 0 8px;
+          font-size: 20px;
+          cursor: pointer;
+        }
+        & .copy-button:hover{
+          background-color: var(--clr-green-dark);
+        }
+        & .copy-button.copied::before{
+          content: 'Copied';
+          position: absolute;
+          font-size: 12px;
+          bottom: -24px;
+          background-color: var(--clr-green-dark-ultra);
+          color: var(--clr-green);
+          padding: 2px 4px;
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+}

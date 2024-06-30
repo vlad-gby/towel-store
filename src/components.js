@@ -13,7 +13,7 @@ import logo from './img/logo.png';
 function newTag(name, className, content){
   const el = document.createElement(name);
   if(className){
-    el.classList.add(className);
+    el.classList.add(...className.split(' '));
   }
   if(content){
     el.textContent = content;
@@ -22,23 +22,34 @@ function newTag(name, className, content){
 }
 function newIcon(name){
   const icon = newTag('i', 'icon');
-  icon.classList.add('bx', name);
+  icon.classList.add('bx', ...name.split(' '));
+  // addClasses(icon, name);
   return icon;
-}
-function newTab(name, iconName){
-  const tab = newTag('a', 'tab');
-  const icon = newIcon(iconName);
-  const h2 = newTag('h2', 'tab-name', name);
-  append(tab, icon, h2);
-  return tab;
 }
 function append(parent, ...children){
   children.forEach(el => {
     parent.appendChild(el);
   });
 }
+export function removeByClass(className){
+  const el = document.querySelector(`.${className}`);
+  if(el){
+    el.remove();
+  } else{
+    console.log('Non-existent class');
+  }
+}
+
 
 export function renderHeader(){
+  function newTab(name, iconName){
+    const tab = newTag('a', 'tab');
+    const icon = newIcon(iconName);
+    const h2 = newTag('h2', 'tab-name', name);
+    append(tab, icon, h2);
+    return tab;
+  }
+  
   const header = newTag('header');
   const logoBox = newTag('a', 'logo-block');
   logoBox.setAttribute('href', '#');
@@ -79,17 +90,13 @@ export function renderOfferSection(){
   const text = newTag('p', 'text', 'To-day');
 
   const offers = newTag('div', 'offers');
-  const scroll = newTag('div', 'scroll');
-  offers.appendChild(scroll);
 
   append(section, text, offers);
   document.body.appendChild(section);
 }
 
-export function renderCard(imageNum, mainText, secondaryText, prevPrice, currPrice){
+export function renderCard(where, imageNum, mainText, secondaryText, prevPrice, currPrice){
   const img = [card1, card2, card3, card4, card5, card6];
-
-  const offers = document.querySelector('.offers');
   
   const card = newTag('div', 'card');
 
@@ -116,7 +123,77 @@ export function renderCard(imageNum, mainText, secondaryText, prevPrice, currPri
   append(textContent, words, numbers);
 
   append(card, image, textContent);
-  offers.appendChild(card)
+
+  if(where === 'offers'){
+    const offers = document.querySelector('.offers');
+    offers.appendChild(card);
+  } else if(where === 'store'){
+    const store = document.querySelector('.store');
+    store.appendChild(card);
+  }
+}
+
+export function renderContactSection(){
+  const section = newTag('section', 'sect-contact');
+  const flexWrapper = newTag('div', 'flex-wrapper');
+  const text = newTag('p', 'text', 'Contact us');
+  const img = newTag('img', 'img');
+  img.src = card3;
+
+  const contactBlock = newTag('div', 'contact-block');
+
+  const form = newTag('form', 'form');
+  function createField(name){
+    const label = newTag('label', `label-${name}`);
+    const input = newTag('input', `input-${name}`);
+    label.appendChild(input);
+    form.appendChild(label);
+    if(name === 'submit'){
+      input.setAttribute('type', 'submit');
+      input.classList.add('order-now');
+    }
+  }
+  createField('name');
+  createField('email');
+  createField('message');
+  const submitBtn = newTag('button', 'submit', 'Submit');
+  form.appendChild(submitBtn);
+
+  const copyInfo = newTag('div', 'copy-info');
+  const ourInfo = newTag('div', 'header', 'Address & Contact');
+  const phone = newTag('div', 'phone info', '+380123456789');
+  const email = newTag('div', 'email info', 'fakemail.mock@gmail.com');
+  const address = newTag('div', 'address info', 'Fake Avenue, Metropolis, SU');
+  append(copyInfo, ourInfo, phone, email, address);
+  
+  const beingCopied = [phone, email, address];
+  beingCopied.forEach(info => {
+    const button = newTag('button', 'copy-button');
+    const icon = newIcon('bx-copy icon');
+    const clickedIcon = newIcon('bx-check icon');
+    button.prepend(icon);
+    button.addEventListener('click', e => {
+      navigator.clipboard.writeText(button.parentElement.textContent);
+
+      icon.remove();
+      button.prepend(clickedIcon);
+      button.classList.add('copied');
+      setTimeout(() => {
+        clickedIcon.remove();
+        button.prepend(icon);
+        button.classList.remove('copied');
+      }, 1000);
+    });
+    info.prepend(button);
+  });
+
+  append(contactBlock, form, copyInfo);
+  append(flexWrapper, contactBlock, img);
+
+
+
+  append(section, text, flexWrapper);
+  document.body.appendChild(section);
 }
 
 

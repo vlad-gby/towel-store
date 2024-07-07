@@ -5,7 +5,7 @@ import * as components from './components.js';
 
 components.renderHeader();
 
-components.renderAbout();
+components.renderHome();
 
 
 

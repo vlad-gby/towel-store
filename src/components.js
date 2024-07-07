@@ -4,6 +4,7 @@ import card3 from './img/card3.jpg';
 import card4 from './img/card4.jpg';
 import card5 from './img/card5.jpg';
 import card6 from './img/card6.jpg';
+import pillows from './img/pillows.jpg';
 import arrowLeft from './img/arrow-left.png';
 import arrowRight from './img/arrow-right.png';
 import cat from './img/cat.png';
@@ -31,7 +32,14 @@ function append(parent, ...children){
     parent.appendChild(el);
   });
 }
-export function removeByClass(className){
+
+function capitalize(text){
+  text = text.split('');
+  text[0] = text[0].toUpperCase();
+  return text.join('');
+}
+
+function removeByClass(className){
   const el = document.querySelector(`.${className}`);
   if(el){
     el.remove();
@@ -40,13 +48,26 @@ export function removeByClass(className){
   }
 }
 
+function clearSections(){
+  const sections = document.querySelectorAll('body section');
+  sections.forEach(section => {
+    section.remove();
+  });
+}
+
+
 
 export function renderHeader(){
-  function newTab(name, iconName){
+  function newTab(name, iconName, action){
     const tab = newTag('a', 'tab');
     const icon = newIcon(iconName);
     const h2 = newTag('h2', 'tab-name', name);
     append(tab, icon, h2);
+
+    tab.addEventListener('click', e => {
+      clearSections();
+      action();
+    });
     return tab;
   }
   
@@ -60,17 +81,37 @@ export function renderHeader(){
   const logoText = newTag('div', 'logo-text', 'Feya Shop');
   append(logoBox, logoImg, logoText);
 
-  const homeTab = newTab('Home', 'bx-home');
-  const storeTab = newTab('Store', 'bx-store-alt');
-  const aboutTab = newTab('About us', 'bx-info-circle');
-  const mailTab = newTab('Contact us', 'bx-envelope');
+  const homeTab = newTab('Home', 'bx-home', renderHome);
+  const storeTab = newTab('Store', 'bx-store-alt', renderStore);
+  const aboutTab = newTab('About us', 'bx-info-circle', renderAbout);
+  const mailTab = newTab('Contact us', 'bx-envelope', renderContact);
   append(tabs, homeTab, storeTab, aboutTab, mailTab);
 
   append(header, logoBox, tabs);
   document.body.appendChild(header);
 }
 
-export function renderBigImg(){
+export function renderHome(){
+  renderBigImg();
+  renderOfferSection();
+
+  renderCard('offers', 2, 'Ember Glow', 'Richly colored towel with a warm feel', 1500, 1200);
+  renderCard('offers', 3, 'Cloud Kiss Towel', 'Super soft and fluffy towel for ultimate comfort', 1500, 1200);
+  renderContactSection();
+  renderCard('offers', 4, 'Cloud Kiss Towel', 'Super soft and fluffy towel for ultimate comfort', 1500, 1200);
+}
+export function renderStore(){
+  renderProductsSection();
+}
+export function renderContact(){
+  renderContactSection();
+}
+export function renderAbout(){
+  renderAboutSection();
+  renderContactSection();
+}
+
+function renderBigImg(){
   const section = newTag('section', 'sect-img');
 
   const bigImg = newTag('img', 'big-img');
@@ -85,7 +126,7 @@ export function renderBigImg(){
   document.body.appendChild(section);
 }
 
-export function renderOfferSection(){
+function renderOfferSection(){
   const section = newTag('section', 'sect-cards');
   const text = newTag('p', 'text', 'To-day');
 
@@ -95,13 +136,13 @@ export function renderOfferSection(){
   document.body.appendChild(section);
 }
 
-export function renderCard(where, imageNum, mainText, secondaryText, prevPrice, currPrice){
+function renderCard(where, imageNum, mainText, secondaryText, prevPrice, currPrice){
   const img = [card1, card2, card3, card4, card5, card6];
   
   const card = newTag('div', 'card');
 
   const image = newTag('div', 'image');
-  image.style.backgroundImage = `url(${img[imageNum]})`;
+  image.style.backgroundImage = `url(${img[imageNum - 1]})`;
 
   const words = newTag('div', 'words');
   const main = newTag('div', 'main-text', mainText);
@@ -128,12 +169,12 @@ export function renderCard(where, imageNum, mainText, secondaryText, prevPrice, 
     const offers = document.querySelector('.offers');
     offers.appendChild(card);
   } else if(where === 'store'){
-    const store = document.querySelector('.store');
+    const store = document.querySelector('.product-grid');
     store.appendChild(card);
   }
 }
 
-export function renderContactSection(){
+function renderContactSection(){
   const section = newTag('section', 'sect-contact');
   const flexWrapper = newTag('div', 'flex-wrapper');
   const text = newTag('p', 'text', 'Contact us');
@@ -144,7 +185,7 @@ export function renderContactSection(){
 
   const form = newTag('form', 'form');
   function createField(name){
-    const label = newTag('label', `label-${name}`);
+    const label = newTag('label', `label-${name}`, capitalize(name));
     const input = newTag('input', `input-${name}`);
     label.appendChild(input);
     form.appendChild(label);
@@ -195,6 +236,46 @@ export function renderContactSection(){
   append(section, text, flexWrapper);
   document.body.appendChild(section);
 }
+
+function renderProductsSection(){
+  const section = newTag('section', 'sect-products');
+
+  const text = newTag('p', 'text', 'Store');
+  const productGrid = newTag('div', 'product-grid');
+  append(section, text, productGrid);
+  
+  document.body.appendChild(section);
+  
+  renderCard('store', 1, 'Serene Escape Bundle', 'Breathable blanket combined with supportive pillows for a calming and restful night\'s sleep.', 500, 350);
+  renderCard('store', 5, 'Hooded Haven', ' Plush and cozy robe with a hood for extra warmth and relaxation.', 200, 110);
+  renderCard('store', 6, 'Cloud Surfer', 'Fluffy and luxurious towel that feels like floating on a cloud.', 20, 13);
+  renderCard('store', 2, 'Ember Glow', 'Richly colored towel with a warm feel', 15, 12);
+  renderCard('store', 3, 'Cloud Comfort', 'Ultra-soft and plush socks for a luxurious feel on your feet.', 1200, 1100);
+  renderCard('store', 4, 'Cloud Kiss Towel', 'Super soft and fluffy towel for ultimate comfort', 500, 200);
+
+}
+
+function renderAboutSection(){
+  const section = newTag('section', 'sect-about');
+
+  const text = newTag('p', 'text', 'About');
+  const about = newTag('div', 'about-us');
+  append(section, text, about);
+
+  const textBlock = newTag('p', 'text-block');
+  const p1 = newTag('p', 'p1', `Nestled in the heart of Sumy, a city renowned for its warmth and hospitality, lies Feya Store. We bring that very warmth straight to your doorstep with our collection of premium home essentials.`);
+  const p2 = newTag('p', 'p2', `Inspired by Sumy's spirit of comfort and community, we handcraft luxurious blankets, plush towels, supportive pillows, and toasty socks – all designed to create a cozy haven within your own home.`);
+  const p3 = newTag('p', 'p3', `Experience the difference of quality Ukrainian craftsmanship. Explore our collection and let the comfort of Sumy embrace you.`);
+  append(textBlock, p1, p2, p3);
+  const img = newTag('img', 'img');
+  img.src = pillows;
+  append(about, textBlock, img);
+
+  document.body.appendChild(section);
+}
+
+
+
 
 
 

@@ -55,9 +55,13 @@ function clearSections(){
   });
 }
 
+function getMain(){
+  return document.querySelector('main')
+}
 
 
-export function renderHeader(){
+
+export function renderStructure(){
   function newTab(name, iconName, action){
     const tab = newTag('a', 'tab');
     const icon = newIcon(iconName);
@@ -81,6 +85,11 @@ export function renderHeader(){
   const logoText = newTag('div', 'logo-text', 'Feya Shop');
   append(logoBox, logoImg, logoText);
 
+  logoBox.addEventListener('click', e => {
+    clearSections();
+    renderHome();
+  });
+
   const homeTab = newTab('Home', 'bx-home', renderHome);
   const storeTab = newTab('Store', 'bx-store-alt', renderStore);
   const aboutTab = newTab('About us', 'bx-info-circle', renderAbout);
@@ -88,11 +97,53 @@ export function renderHeader(){
   append(tabs, homeTab, storeTab, aboutTab, mailTab);
 
   append(header, logoBox, tabs);
-  document.body.appendChild(header);
+
+  const main = newTag('main');
+  const footer = newTag('footer');
+  append(document.body, header, main, footer);
+
+  const text = newTag('h1', 'text', 'The beauty of my mock-page is made through the lens of talented photographers: ');
+  const contributors = newTag('div', 'contributors');
+
+  append(footer, text, contributors);
+  function newAuthorUnsplash(name, nameLink, photoLink){
+    const author = newTag('h2', 'contributor', ' on ');
+
+    const nameL = newTag('a', 'name-link', name);
+    nameL.setAttribute('href', nameLink);
+    nameL.setAttribute('target', '_blank');
+    author.prepend(nameL);
+
+    const photoL = newTag('a', 'photo-link', 'Unsplash');
+    photoL.setAttribute('href', photoLink);
+    photoL.setAttribute('target', '_blank');
+    author.appendChild(photoL);
+
+    document.querySelector('.contributors').appendChild(author);
+  }
+  function newAuthor(name, nameLink){
+    const author = newTag('h2', 'contributor');
+
+    const nameL = newTag('a', 'name-link', name);
+    nameL.setAttribute('href', nameLink);
+    nameL.setAttribute('target', '_blank');
+    author.prepend(nameL);
+
+    document.querySelector('.contributors').appendChild(author);
+  }
+
+  newAuthorUnsplash('Joyful', `https://unsplash.com/@joyfulcaptures?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash`, `https://unsplash.com/photos/brown-bottle-on-white-towel-XMoXo0vYOeg?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash`);
+  newAuthorUnsplash('Thom Bradley', `https://unsplash.com/@thombradley?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash`, `https://unsplash.com/photos/white-and-gray-bed-pillow-7FE2UTxR1Yw?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash`);
+  newAuthorUnsplash('Agata Create', `https://unsplash.com/@agatacreate?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash`, `https://unsplash.com/photos/three-assorted-color-pillows-fQ2XuWjSzfE?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash`);
+  newAuthorUnsplash('Sven Mieke', `https://unsplash.com/@sxoxm?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash`, `https://unsplash.com/photos/folded-towels-near-potted-plants-BB3dR-N5Npg?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash`);
+  newAuthor('Marina Orlova', `https://www.pexels.com/@orlovamaria/`);
+  newAuthor('Samantha Passuello', `https://www.pexels.com/photo/person-s-hand-inside-pocket-306739/`);
+  newAuthor('Taryn Elliott', `https://www.pexels.com/photo/person-wearing-gray-and-white-socks-near-brown-fireplace-4231477/`);
+
 }
 
 export function renderHome(){
-  renderBigImg();
+  renderBigImgSection();
   renderOfferSection();
 
   renderCard('offers', 2, 'Ember Glow', 'Richly colored towel with a warm feel', 1500, 1200);
@@ -111,7 +162,7 @@ export function renderAbout(){
   renderContactSection();
 }
 
-function renderBigImg(){
+function renderBigImgSection(){
   const section = newTag('section', 'sect-img');
 
   const bigImg = newTag('img', 'big-img');
@@ -123,7 +174,7 @@ function renderBigImg(){
   append(textBlock, orderBtn, text);
 
   append(section, bigImg, textBlock);
-  document.body.appendChild(section);
+  getMain().appendChild(section);
 }
 
 function renderOfferSection(){
@@ -133,7 +184,7 @@ function renderOfferSection(){
   const offers = newTag('div', 'offers');
 
   append(section, text, offers);
-  document.body.appendChild(section);
+  getMain().appendChild(section);
 }
 
 function renderCard(where, imageNum, mainText, secondaryText, prevPrice, currPrice){
@@ -234,7 +285,7 @@ function renderContactSection(){
 
 
   append(section, text, flexWrapper);
-  document.body.appendChild(section);
+  getMain().appendChild(section);
 }
 
 function renderProductsSection(){
@@ -244,7 +295,7 @@ function renderProductsSection(){
   const productGrid = newTag('div', 'product-grid');
   append(section, text, productGrid);
   
-  document.body.appendChild(section);
+  getMain().appendChild(section);
   
   renderCard('store', 1, 'Serene Escape Bundle', 'Breathable blanket combined with supportive pillows for a calming and restful night\'s sleep.', 500, 350);
   renderCard('store', 5, 'Hooded Haven', ' Plush and cozy robe with a hood for extra warmth and relaxation.', 200, 110);
@@ -271,7 +322,7 @@ function renderAboutSection(){
   img.src = pillows;
   append(about, textBlock, img);
 
-  document.body.appendChild(section);
+  getMain().appendChild(section);
 }
 
 
